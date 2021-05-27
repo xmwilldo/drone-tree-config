@@ -1,30 +1,46 @@
+# code.gitea.io/sdk/gitea v0.14.0
+## explicit
+code.gitea.io/sdk/gitea
 # github.com/99designs/httpsignatures-go v0.0.0-20170731043157-88528bf4ca7e
 github.com/99designs/httpsignatures-go
 # github.com/drone/drone-go v1.5.0
+## explicit
 github.com/drone/drone-go/drone
 github.com/drone/drone-go/plugin/config
 github.com/drone/drone-go/plugin/internal/aesgcm
 github.com/drone/drone-go/plugin/internal/client
 github.com/drone/drone-go/plugin/logger
 # github.com/golang/protobuf v1.4.3
+## explicit
 github.com/golang/protobuf/proto
 # github.com/google/go-github/v33 v33.0.0
+## explicit
 github.com/google/go-github/v33/github
 # github.com/google/go-querystring v1.0.0
 github.com/google/go-querystring/query
 # github.com/google/uuid v1.1.5
+## explicit
 github.com/google/uuid
 # github.com/hashicorp/go-cleanhttp v0.5.1
 github.com/hashicorp/go-cleanhttp
 # github.com/hashicorp/go-retryablehttp v0.6.8
+## explicit
 github.com/hashicorp/go-retryablehttp
+# github.com/hashicorp/go-version v1.2.1
+github.com/hashicorp/go-version
 # github.com/kelseyhightower/envconfig v1.4.0
+## explicit
 github.com/kelseyhightower/envconfig
 # github.com/sirupsen/logrus v1.7.0
+## explicit
 github.com/sirupsen/logrus
+# github.com/stretchr/testify v1.7.0
+## explicit
 # github.com/wbrefvem/go-bitbucket v0.0.0-20190128183802-fc08fd046abb
+## explicit
 github.com/wbrefvem/go-bitbucket
 # github.com/xanzy/go-gitlab v0.42.0
+## explicit
 github.com/xanzy/go-gitlab
 # golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 golang.org/x/crypto/cast5
@@ -35,18 +51,23 @@ golang.org/x/crypto/openpgp/errors
 golang.org/x/crypto/openpgp/packet
 golang.org/x/crypto/openpgp/s2k
 # golang.org/x/net v0.0.0-20201224014010-6772e930b67b
+## explicit
 golang.org/x/net/context
 golang.org/x/net/context/ctxhttp
 # golang.org/x/oauth2 v0.0.0-20210113205817-d3ed898aa8a3
+## explicit
 golang.org/x/oauth2
 golang.org/x/oauth2/internal
 # golang.org/x/sys v0.0.0-20210113181707-4bcb84eeeb78
+## explicit
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
 # golang.org/x/time v0.0.0-20201208040808-7e3f01d25324
+## explicit
 golang.org/x/time/rate
 # google.golang.org/appengine v1.6.7
+## explicit
 google.golang.org/appengine/internal
 google.golang.org/appengine/internal/base
 google.golang.org/appengine/internal/datastore
@@ -82,4 +103,7 @@ google.golang.org/protobuf/reflect/protoregistry
 google.golang.org/protobuf/runtime/protoiface
 google.golang.org/protobuf/runtime/protoimpl
 # gopkg.in/yaml.v2 v2.4.0
+## explicit
 gopkg.in/yaml.v2
+# gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
+## explicit

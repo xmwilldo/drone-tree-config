@@ -3,6 +3,7 @@ module github.com/bitsbeats/drone-tree-config
 go 1.13
 
 require (
+    code.gitea.io/sdk/gitea v0.14.0
 	github.com/drone/drone-go v1.5.0
 	github.com/golang/protobuf v1.4.3 // indirect
 	github.com/google/go-github/v33 v33.0.0

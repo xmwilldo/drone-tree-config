@@ -44,10 +44,24 @@ func WithBitBucketClient(bitBucketClient string) func(*Plugin) {
 	}
 }
 
-// WithBitBucketClient configures with a bitbucket secret, alternative to github
+// WithBitBucketSecret configures with a bitbucket secret, alternative to github
 func WithBitBucketSecret(bitBucketSecret string) func(*Plugin) {
 	return func(p *Plugin) {
 		p.bitBucketSecret = bitBucketSecret
+	}
+}
+
+// WithGiteaServer configures with the gitea server specified
+func WithGiteaServer(giteaServer string) func(*Plugin) {
+	return func(p *Plugin) {
+		p.giteaServer = giteaServer
+	}
+}
+
+// WithGiteaToken configures with the gitea token specified
+func WithGiteaToken(giteaToken string) func(*Plugin) {
+	return func(p *Plugin) {
+		p.giteaToken = giteaToken
 	}
 }
 

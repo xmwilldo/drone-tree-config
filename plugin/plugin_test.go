@@ -3,12 +3,11 @@ package plugin
 import (
 	"context"
 	"io"
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"testing"
 	"time"
-
-	"net/http"
-	"net/http/httptest"
 
 	"github.com/drone/drone-go/drone"
 	"github.com/drone/drone-go/plugin/config"
@@ -278,12 +277,12 @@ func TestCache(t *testing.T) {
 	ck := newCacheKey(r)
 
 	p := &Plugin{
-		server: ts.URL,
+		server:      ts.URL,
 		gitHubToken: mockToken,
-		concat: true,
-		maxDepth: 2,
-		cacheTTL: time.Minute*1,
-		cache: &configCache{},
+		concat:      true,
+		maxDepth:    2,
+		cacheTTL:    time.Minute * 1,
+		cache:       &configCache{},
 	}
 
 	// test cache hit
