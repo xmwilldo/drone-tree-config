@@ -38,8 +38,25 @@ func (s GiteaClient) ChangedFilesInDiff(ctx context.Context, base string, head s
 		return nil, err
 	}
 
-	for _, file := range commit.Files {
-		changedFiles = append(changedFiles, file.Filename)
+	// files maybe null, find parent commit
+	if len(commit.Files) == 0 {
+		for i := len(commit.Parents) - 1; i >= 0; i-- {
+			parentCommit, _, err := s.delegate.GetSingleCommit(s.repo.Namespace, s.repo.Name, commit.Parents[i].SHA)
+			if err != nil {
+				logrus.Error("GetSingleCommit, err:", err)
+				return nil, err
+			}
+			if len(parentCommit.Files) != 0 {
+				for _, file := range parentCommit.Files {
+					changedFiles = append(changedFiles, file.Filename)
+				}
+				break
+			}
+		}
+	} else {
+		for _, file := range commit.Files {
+			changedFiles = append(changedFiles, file.Filename)
+		}
 	}
 
 	return changedFiles, nil
