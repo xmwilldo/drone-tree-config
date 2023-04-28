@@ -31,6 +31,7 @@ func (s GiteaClient) ChangedFilesInPullRequest(ctx context.Context, pullRequestI
 }
 
 func (s GiteaClient) ChangedFilesInDiff(ctx context.Context, base string, head string) ([]string, error) {
+	logrus.Infof("ChangedFilesInDiff, base:%s, head:%s", base, head)
 	var changedFiles []string
 	commit, _, err := s.delegate.GetSingleCommit(s.repo.Namespace, s.repo.Name, head)
 	if err != nil {
@@ -40,25 +41,69 @@ func (s GiteaClient) ChangedFilesInDiff(ctx context.Context, base string, head s
 
 	// files maybe null, find parent commit
 	if len(commit.Files) == 0 {
-		for i := len(commit.Parents) - 1; i >= 0; i-- {
-			parentCommit, _, err := s.delegate.GetSingleCommit(s.repo.Namespace, s.repo.Name, commit.Parents[i].SHA)
+		logrus.Info("commit.Files is empty, find parent commit")
+		parentCommit, _, err := s.delegate.GetSingleCommit(s.repo.Namespace, s.repo.Name, commit.Parents[0].SHA)
+		if err != nil {
+			logrus.Error("GetSingleCommit, err:", err)
+			return nil, err
+		}
+		thisCommit := parentCommit
+		for _, file := range thisCommit.Files {
+			logrus.Infof("conmmit file.Filename: %s", file.Filename)
+			changedFiles = append(changedFiles, file.Filename)
+		}
+
+		for {
+			if len(thisCommit.Parents) == 0 {
+				break
+			}
+
+			logrus.Infof("commit.Parents.SHA: %s", thisCommit.Parents[0].SHA)
+			parentCommit, _, err := s.delegate.GetSingleCommit(s.repo.Namespace, s.repo.Name, thisCommit.Parents[0].SHA)
 			if err != nil {
 				logrus.Error("GetSingleCommit, err:", err)
 				return nil, err
 			}
-			if len(parentCommit.Files) != 0 {
-				for _, file := range parentCommit.Files {
-					changedFiles = append(changedFiles, file.Filename)
-				}
+			thisCommit = parentCommit
+			if thisCommit.SHA == base {
 				break
+			}
+			for _, file := range thisCommit.Files {
+				logrus.Infof("parentCommit file.Filename: %s", file.Filename)
+				changedFiles = append(changedFiles, file.Filename)
 			}
 		}
 	} else {
-		for _, file := range commit.Files {
+		logrus.Info("commit.Files is not empty")
+		thisCommit := commit
+		for _, file := range thisCommit.Files {
+			logrus.Infof("conmmit file.Filename: %s", file.Filename)
 			changedFiles = append(changedFiles, file.Filename)
+		}
+
+		for {
+			if len(thisCommit.Parents) == 0 {
+				break
+			}
+
+			logrus.Infof("commit.Parents.SHA: %s", thisCommit.Parents[0].SHA)
+			parentCommit, _, err := s.delegate.GetSingleCommit(s.repo.Namespace, s.repo.Name, thisCommit.Parents[0].SHA)
+			if err != nil {
+				logrus.Error("GetSingleCommit, err:", err)
+				return nil, err
+			}
+			thisCommit = parentCommit
+			if thisCommit.SHA == base {
+				break
+			}
+			for _, file := range thisCommit.Files {
+				logrus.Infof("parentCommit file.Filename: %s", file.Filename)
+				changedFiles = append(changedFiles, file.Filename)
+			}
 		}
 	}
 
+	logrus.Infof("changedFiles: %+v", changedFiles)
 	return changedFiles, nil
 }
 
