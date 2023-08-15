@@ -1,4 +1,4 @@
-FROM golang:1.14-alpine AS builder
+FROM golang:1.20-alpine AS builder
 
 RUN true \
   && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
@@ -8,11 +8,12 @@ ADD . /go/src/github.com/bitsbeats/drone-tree-config
 WORKDIR /go/src/github.com/bitsbeats/drone-tree-config
 
 ENV CGO_ENABLED=0 \
-    GO111MODULE=on
+    GO111MODULE=on \
+    GOPROXY=https://goproxy.cn,direct
 
 RUN true \
-  && go test -mod=vendor ./plugin \
-  && go build -mod=vendor -o drone-tree-config github.com/bitsbeats/drone-tree-config/cmd/drone-tree-config \
+  && go test ./plugin \
+  && go build -o drone-tree-config github.com/bitsbeats/drone-tree-config/cmd/drone-tree-config \
   && strip drone-tree-config
 
 # ---

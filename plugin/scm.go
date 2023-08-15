@@ -6,8 +6,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/bitsbeats/drone-tree-config/plugin/scm_clients"
 	"github.com/drone/drone-go/drone"
+
+	"github.com/bitsbeats/drone-tree-config/plugin/scm_clients"
 
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
@@ -70,8 +71,7 @@ func (p *Plugin) getScmChanges(ctx context.Context, req *request) ([]string, err
 	}
 
 	if len(changedFiles) > 0 {
-		changedList := strings.Join(changedFiles, "\n  ")
-		logrus.Debugf("%s changed files: \n  %s", req.UUID, changedList)
+		logrus.Infof("%s changed files: %+v", req.UUID, changedFiles)
 	} else {
 		return nil, nil
 	}
