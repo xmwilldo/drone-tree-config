@@ -48,7 +48,6 @@ func (s GiteaClient) ChangedFilesInDiff(ctx context.Context, base string, head s
 	go func() {
 		currentCommit := nowCommit
 		var changedFiles []string
-		var err error
 		for {
 			if len(currentCommit.Parents) == 1 {
 				if currentCommit.SHA == base {
