@@ -31,17 +31,17 @@ func (s GiteaClient) ChangedFilesInPullRequest(ctx context.Context, pullRequestI
 	return []string{}, nil
 }
 
-type result struct {
-	ChangedFiles []string
-	Err          error
-}
-
 func (s GiteaClient) ChangedFilesInDiff(ctx context.Context, base string, head string) ([]string, error) {
 	logrus.Infof("ChangedFilesInDiff, base:%s, head:%s", base, head)
 	nowCommit, _, err := s.delegate.GetSingleCommit(s.repo.Namespace, s.repo.Name, head)
 	if err != nil {
 		logrus.Error("GetSingleCommit, err:", err)
 		return nil, err
+	}
+
+	type result struct {
+		ChangedFiles []string
+		Err          error
 	}
 
 	resultChan := make(chan result)
