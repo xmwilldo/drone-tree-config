@@ -28,6 +28,7 @@ func NewGiteaClient(server string, token string, repo drone.Repo) (ScmClient, er
 }
 
 func (s GiteaClient) ChangedFilesInPullRequest(ctx context.Context, pullRequestID int) ([]string, error) {
+	logrus.Infof("pull request not implemente")
 	return []string{}, nil
 }
 
@@ -190,4 +191,21 @@ func (s GiteaClient) GetFileListing(ctx context.Context, path string, commitRef 
 	}
 
 	return result, nil
+}
+
+func (s GiteaClient) GetTagShaList(ctx context.Context) ([]string, error) {
+	tags, _, err := s.delegate.ListRepoTags(s.repo.Namespace, s.repo.Name, gitea.ListRepoTagsOptions{
+		ListOptions: gitea.ListOptions{
+			Page:     1,
+			PageSize: 10,
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+	tagsName := make([]string, 0)
+	for _, tag := range tags {
+		tagsName = append(tagsName, tag.Commit.SHA)
+	}
+	return tagsName, nil
 }

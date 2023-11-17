@@ -156,3 +156,8 @@ func (s GitlabClient) decode(file *gitlab.File) (string, error) {
 		return "", fmt.Errorf("Unsupported content encoding: %v", encoding)
 	}
 }
+
+func (s GitlabClient) GetTagShaList(ctx context.Context) ([]string, error) {
+	// TODO implement me
+	panic("implement me")
+}

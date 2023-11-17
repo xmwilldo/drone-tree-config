@@ -52,6 +52,18 @@ func (p *Plugin) getScmChanges(ctx context.Context, req *request) ([]string, err
 		if err != nil {
 			logrus.Errorf("%s unable to fetch diff for Pull request %v", req.UUID, err)
 		}
+	} else if strings.HasPrefix(req.Build.Ref, "refs/tags/") {
+		tagsSha, err := req.Client.GetTagShaList(ctx)
+		if err != nil {
+			return nil, err
+		}
+		logrus.Infof("tagsSha: %+v", tagsSha)
+
+		changedFiles, err = req.Client.ChangedFilesInDiff(ctx, tagsSha[1], tagsSha[0])
+		if err != nil {
+			logrus.Errorf("%s unable to fetch diff: '%v'", req.UUID, err)
+			return nil, err
+		}
 	} else {
 		// use diff to get changed files
 		before := req.Build.Before

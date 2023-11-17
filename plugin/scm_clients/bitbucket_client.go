@@ -5,16 +5,17 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/drone/drone-go/drone"
-	"github.com/google/uuid"
-	"github.com/sirupsen/logrus"
-	"github.com/wbrefvem/go-bitbucket"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
 	"path/filepath"
 	"strings"
+
+	"github.com/drone/drone-go/drone"
+	"github.com/google/uuid"
+	"github.com/sirupsen/logrus"
+	"github.com/wbrefvem/go-bitbucket"
 )
 
 type BitBucketClient struct {
@@ -181,4 +182,9 @@ func (s BitBucketClient) GetFileListing(ctx context.Context, path string, commit
 func basicAuth(username string, password string) string {
 	auth := username + ":" + password
 	return base64.StdEncoding.EncodeToString([]byte(auth))
+}
+
+func (s BitBucketClient) GetTagShaList(ctx context.Context) ([]string, error) {
+	// TODO implement me
+	panic("implement me")
 }

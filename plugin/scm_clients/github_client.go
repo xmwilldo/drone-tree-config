@@ -147,3 +147,8 @@ func (s GithubClient) getContents(ctx context.Context, path string, commitRef st
 	logrus.Debugf("Repositories.CompareCommits %d: %s", resp.StatusCode, resp.Request.URL)
 	return f, d, resp, err
 }
+
+func (s GithubClient) GetTagShaList(ctx context.Context) ([]string, error) {
+	// TODO implement me
+	panic("implement me")
+}
