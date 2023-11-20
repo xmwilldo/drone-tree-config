@@ -2,6 +2,8 @@ package scm_clients
 
 import (
 	"context"
+	"fmt"
+	"strings"
 	"time"
 
 	"code.gitea.io/sdk/gitea"
@@ -132,6 +134,20 @@ func (s GiteaClient) ChangedFilesInDiff(ctx context.Context, base string, head s
 	// 	}
 	// }()
 
+	// 替换 model 文件为 rpc/.drone.yml
+	var replaceModelFile = func(changedFiles []string) []string {
+		replacedFiles := make([]string, 0)
+		for _, file := range changedFiles {
+			if strings.Contains(file, "model") {
+				replacedFiles = append(replacedFiles, fmt.Sprintf("%s%s", strings.Split(file, "model")[0], "rpc/.drone.yml"))
+			} else {
+				replacedFiles = append(replacedFiles, file)
+			}
+		}
+
+		return replacedFiles
+	}
+
 	var changedFiles []string
 	select {
 	case r := <-resultChan:
@@ -139,7 +155,7 @@ func (s GiteaClient) ChangedFilesInDiff(ctx context.Context, base string, head s
 			logrus.Errorf("get changedFiles error: %v", r.Err)
 			return nil, r.Err
 		} else {
-			changedFiles = r.ChangedFiles
+			changedFiles = replaceModelFile(r.ChangedFiles)
 			// 去重
 			outputChangedFiles := make([]string, 0)
 			seen := map[string]bool{}
