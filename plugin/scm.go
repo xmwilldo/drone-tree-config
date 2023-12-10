@@ -53,6 +53,11 @@ func (p *Plugin) getScmChanges(ctx context.Context, req *request) ([]string, err
 			logrus.Errorf("%s unable to fetch diff for Pull request %v", req.UUID, err)
 		}
 	} else if strings.HasPrefix(req.Build.Ref, "refs/tags/") {
+		// 发布生产环境 tag
+		if strings.Contains(req.Build.Ref, "release") {
+			changedFiles = p.allService
+			return changedFiles, nil
+		}
 		tagsSha, err := req.Client.GetTagShaList(ctx)
 		if err != nil {
 			return nil, err

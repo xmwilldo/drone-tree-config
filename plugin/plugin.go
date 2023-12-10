@@ -7,9 +7,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/bitsbeats/drone-tree-config/plugin/scm_clients"
 	"github.com/drone/drone-go/drone"
 	"github.com/drone/drone-go/plugin/config"
+
+	"github.com/bitsbeats/drone-tree-config/plugin/scm_clients"
 
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
@@ -34,6 +35,7 @@ type (
 		considerFile  string
 		cacheTTL      time.Duration
 		cache         *configCache
+		allService    []string
 	}
 
 	droneConfig struct {
@@ -65,7 +67,7 @@ func New(options ...func(*Plugin)) config.Plugin {
 func (p *Plugin) Find(ctx context.Context, droneRequest *config.Request) (*drone.Config, error) {
 	someUuid := uuid.New()
 	logrus.Infof("%s %s/%s started", someUuid, droneRequest.Repo.Namespace, droneRequest.Repo.Name)
-	defer logrus.Infof("%s finished", someUuid)
+	defer logrus.Infof("%s finished\n", someUuid)
 
 	// connect to scm
 	client, err := p.NewScmClient(ctx, someUuid, droneRequest.Repo)

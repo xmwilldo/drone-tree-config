@@ -1,6 +1,10 @@
 package plugin
 
-import "time"
+import (
+	"fmt"
+	"strings"
+	"time"
+)
 
 // WithServer configures with a custom SCM server
 func WithServer(server string) func(*Plugin) {
@@ -105,5 +109,13 @@ func WithConsiderFile(considerFile string) func(*Plugin) {
 func WithCacheTTL(ttl time.Duration) func(*Plugin) {
 	return func(p *Plugin) {
 		p.cacheTTL = ttl
+	}
+}
+
+func WithAllService(allService string) func(*Plugin) {
+	return func(p *Plugin) {
+		for _, service := range strings.Split(allService, "|") {
+			p.allService = append(p.allService, fmt.Sprintf("%s/.drone.yml", service))
+		}
 	}
 }

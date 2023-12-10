@@ -212,7 +212,7 @@ func (s GiteaClient) GetFileListing(ctx context.Context, path string, commitRef 
 func (s GiteaClient) GetTagShaList(ctx context.Context) ([]string, error) {
 	tags, _, err := s.delegate.ListRepoTags(s.repo.Namespace, s.repo.Name, gitea.ListRepoTagsOptions{
 		ListOptions: gitea.ListOptions{
-			Page:     1,
+			Page:     0,
 			PageSize: 10,
 		},
 	})

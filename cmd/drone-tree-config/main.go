@@ -31,6 +31,7 @@ type (
 		GiteaToken          string        `envconfig:"GITEA_TOKEN"`
 		ConsiderFile        string        `envconfig:"PLUGIN_CONSIDER_FILE"`
 		CacheTTL            time.Duration `envconfig:"PLUGIN_CACHE_TTL"`
+		AllService          string        `envconfig:"ALL_SERVICE"`
 	}
 )
 
@@ -73,6 +74,7 @@ func main() {
 			plugin.WithGiteaToken(spec.GiteaToken),
 			plugin.WithConsiderFile(spec.ConsiderFile),
 			plugin.WithCacheTTL(spec.CacheTTL),
+			plugin.WithAllService(spec.AllService),
 		),
 		spec.Secret,
 		logrus.StandardLogger(),
