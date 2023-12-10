@@ -157,7 +157,7 @@ func (s GitlabClient) decode(file *gitlab.File) (string, error) {
 	}
 }
 
-func (s GitlabClient) GetTagShaList(ctx context.Context) ([]string, error) {
+func (s GitlabClient) GetTagShaList(ctx context.Context, prefix string) ([]string, error) {
 	// TODO implement me
 	panic("implement me")
 }

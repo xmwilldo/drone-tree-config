@@ -209,7 +209,7 @@ func (s GiteaClient) GetFileListing(ctx context.Context, path string, commitRef 
 	return result, nil
 }
 
-func (s GiteaClient) GetTagShaList(ctx context.Context) ([]string, error) {
+func (s GiteaClient) GetTagShaList(ctx context.Context, prefix string) ([]string, error) {
 	tags, _, err := s.delegate.ListRepoTags(s.repo.Namespace, s.repo.Name, gitea.ListRepoTagsOptions{
 		ListOptions: gitea.ListOptions{
 			Page:     0,
@@ -219,9 +219,14 @@ func (s GiteaClient) GetTagShaList(ctx context.Context) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	tagsName := make([]string, 0)
+	tagsSha := make([]string, 0)
 	for _, tag := range tags {
-		tagsName = append(tagsName, tag.Commit.SHA)
+		if prefix != "" {
+			if !strings.HasPrefix(tag.Name, prefix) {
+				continue
+			}
+		}
+		tagsSha = append(tagsSha, tag.Commit.SHA)
 	}
-	return tagsName, nil
+	return tagsSha, nil
 }

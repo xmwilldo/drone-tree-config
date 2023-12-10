@@ -184,7 +184,7 @@ func basicAuth(username string, password string) string {
 	return base64.StdEncoding.EncodeToString([]byte(auth))
 }
 
-func (s BitBucketClient) GetTagShaList(ctx context.Context) ([]string, error) {
+func (s BitBucketClient) GetTagShaList(ctx context.Context, prefix string) ([]string, error) {
 	// TODO implement me
 	panic("implement me")
 }

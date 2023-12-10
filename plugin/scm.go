@@ -53,21 +53,35 @@ func (p *Plugin) getScmChanges(ctx context.Context, req *request) ([]string, err
 			logrus.Errorf("%s unable to fetch diff for Pull request %v", req.UUID, err)
 		}
 	} else if strings.HasPrefix(req.Build.Ref, "refs/tags/") {
+		tagType := strings.Split(req.Build.Ref, "/")[2]
 		// 发布生产环境 tag
-		if strings.Contains(req.Build.Ref, "release") {
+		if strings.HasPrefix(tagType, "release") {
 			changedFiles = p.allService
 			return changedFiles, nil
-		}
-		tagsSha, err := req.Client.GetTagShaList(ctx)
-		if err != nil {
-			return nil, err
-		}
-		logrus.Infof("tagsSha: %+v", tagsSha)
+		} else if strings.HasPrefix(tagType, "hotfix") {
+			tagsSha, err := req.Client.GetTagShaList(ctx, "")
+			if err != nil {
+				return nil, err
+			}
+			logrus.Infof("tagsSha: %+v", tagsSha[:2])
 
-		changedFiles, err = req.Client.ChangedFilesInDiff(ctx, tagsSha[1], tagsSha[0])
-		if err != nil {
-			logrus.Errorf("%s unable to fetch diff: '%v'", req.UUID, err)
-			return nil, err
+			changedFiles, err = req.Client.ChangedFilesInDiff(ctx, tagsSha[1], tagsSha[0])
+			if err != nil {
+				logrus.Errorf("%s unable to fetch diff: '%v'", req.UUID, err)
+				return nil, err
+			}
+		} else if strings.HasPrefix(tagType, "v") {
+			tagsSha, err := req.Client.GetTagShaList(ctx, "v")
+			if err != nil {
+				return nil, err
+			}
+			logrus.Infof("tagsSha: %+v", tagsSha[:2])
+
+			changedFiles, err = req.Client.ChangedFilesInDiff(ctx, tagsSha[1], tagsSha[0])
+			if err != nil {
+				logrus.Errorf("%s unable to fetch diff: '%v'", req.UUID, err)
+				return nil, err
+			}
 		}
 	} else {
 		// use diff to get changed files

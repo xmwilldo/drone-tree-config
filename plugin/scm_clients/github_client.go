@@ -148,7 +148,7 @@ func (s GithubClient) getContents(ctx context.Context, path string, commitRef st
 	return f, d, resp, err
 }
 
-func (s GithubClient) GetTagShaList(ctx context.Context) ([]string, error) {
+func (s GithubClient) GetTagShaList(ctx context.Context, prefix string) ([]string, error) {
 	// TODO implement me
 	panic("implement me")
 }
